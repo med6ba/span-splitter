@@ -3,65 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f8fafc">
-  <title>Medba Span Splitter</title>
+  <meta name="theme-color" content="#ffffff">
+  <title>Span Splitter</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <div class="app-shell">
+  <main class="workspace" id="workspace" aria-label="HTML Span Splitter">
+    <section class="panel input-panel" aria-label="Input HTML">
+      <header class="panel-toolbar">
+        <div class="panel-title"><h1>Input</h1></div>
+        <div class="tool-actions">
+          <button type="button" class="icon-btn" id="importBtn" title="Import HTML" aria-label="Import HTML">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V3m0 0L7.5 7.5M12 3l4.5 4.5"/><path d="M4 15v3a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-3"/></svg>
+          </button>
+          <button type="button" class="icon-btn" id="copyInputBtn" title="Copy input" aria-label="Copy input">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+          </button>
+          <button type="button" class="icon-btn" id="clearBtn" title="Clear input" aria-label="Clear input">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6"/><path d="M10 10v6m4-6v6"/></svg>
+          </button>
+          <input id="fileInput" type="file" accept=".html,.htm,.txt,text/html,text/plain" hidden>
+        </div>
+      </header>
+      <div class="editor-space">
+        <label class="sr-only" for="source">Input HTML</label>
+        <textarea id="source" class="code-editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Paste HTML here..."></textarea>
+      </div>
+    </section>
 
-    <main class="workstation" aria-label="HTML span splitter">
-      <section class="panel" aria-label="Input HTML">
-        <div class="panel-head">
-          <div class="panel-heading"><span class="panel-dot input-dot" aria-hidden="true"></span><h1>Input HTML</h1></div>
-          <div class="tools">
-            <button class="text-button" id="importButton" type="button" title="Import an HTML file">Import</button>
-            <button class="text-button" id="clearButton" type="button" title="Clear editor">Clear</button>
-            <input id="fileInput" type="file" accept=".html,.htm,.txt,text/html,text/plain" hidden>
-          </div>
-        </div>
-        <div class="editor-wrap">
-          <label for="source" class="sr-only">HTML source code</label>
-          <textarea id="source" class="code-editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Paste your HTML here..."></textarea>
-        </div>
-        <div class="panel-foot">
-          <span id="sourceStats">0 characters</span>
-          
-        </div>
-      </section>
+    <div class="resizer" id="resizer" role="separator" tabindex="0" aria-label="Resize input and output panels" aria-orientation="vertical" aria-valuemin="20" aria-valuemax="80" aria-valuenow="50" title="Drag to resize · Double click to reset"><span class="grip" aria-hidden="true"><i></i><i></i><i></i></span></div>
 
-      <section class="panel" aria-label="Output HTML">
-        <div class="panel-head output-header">
-          <div class="panel-heading"><span class="panel-dot output-dot" aria-hidden="true"></span><h2>Output</h2></div>
-          <div class="tools">
-            <div class="view-switch" role="group" aria-label="Output view">
-              <button id="codeTab" class="view-button active" type="button" aria-pressed="true">Code</button>
-              <button id="previewTab" class="view-button" type="button" aria-pressed="false">Preview</button>
-            </div>
-            <button class="icon-button theme-button" id="themeButton" type="button" title="Switch theme" aria-label="Switch theme">
-              <svg class="sun-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
-              <svg class="moon-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5 8.5 8.5 0 1 0 20.5 14.5Z"/></svg>
+    <section class="panel output-panel" aria-label="Output HTML">
+      <header class="panel-toolbar">
+        <div class="panel-title"><h2>Output</h2></div>
+        <div class="tool-actions">
+          <div class="view-switch" role="group" aria-label="Output view">
+            <button class="icon-btn switch-btn selected" id="codeBtn" type="button" title="Code view" aria-label="Code view" aria-pressed="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-4 16"/></svg>
+            </button>
+            <button class="icon-btn switch-btn" id="previewBtn" type="button" title="Preview HTML" aria-label="Preview HTML" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5 12 5s9.5 7 9.5 7-3.5 7-9.5 7S2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
+          <span class="toolbar-separator" aria-hidden="true"></span>
+          <button class="icon-btn" id="copyBtn" type="button" title="Copy HTML" aria-label="Copy HTML">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+          </button>
+          <button class="icon-btn" id="downloadBtn" type="button" title="Download HTML" aria-label="Download HTML">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v13m0 0 5-5m-5 5-5-5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+          </button>
+          <span class="toolbar-separator" aria-hidden="true"></span>
+          <button class="icon-btn" id="settingsBtn" type="button" title="Settings" aria-label="Settings" aria-haspopup="dialog" aria-expanded="false" aria-controls="settingsPanel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10.3 3.3.5-1h2.4l.5 1a2 2 0 0 0 2.6 1l1-.5 1.7 1.7-.5 1a2 2 0 0 0 1 2.6l1 .5v2.4l-1 .5a2 2 0 0 0-1 2.6l.5 1-1.7 1.7-1-.5a2 2 0 0 0-2.6 1l-.5 1h-2.4l-.5-1a2 2 0 0 0-2.6-1l-1 .5L5 17.1l.5-1a2 2 0 0 0-1-2.6l-1-.5v-2.4l1-.5a2 2 0 0 0 1-2.6l-.5-1 1.7-1.7 1 .5a2 2 0 0 0 2.6-1Z" transform="translate(0 1)"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
         </div>
-        <div class="result-area">
-          <div id="codeView" class="code-view">
-            <label for="result" class="sr-only">Converted HTML</label>
-            <textarea id="result" class="code-editor" readonly spellcheck="false" placeholder="Your converted HTML will appear here..."></textarea>
-          </div>
-          <div id="previewView" class="preview-view" hidden>
-            <iframe id="preview" title="HTML output preview" sandbox="" referrerpolicy="no-referrer"></iframe>
-          </div>
+      </header>
+      <div class="editor-space result-space">
+        <div id="htmlError" class="html-error" role="alert" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 10 18H2L12 3Z"/><path d="M12 9v5m0 3h.01"/></svg>
+          <div><strong>Check your HTML</strong><span id="htmlErrorDetail"></span></div>
         </div>
-        <div class="panel-foot output-foot">
-          <span id="resultStats">0 spans</span>
-          <div class="tools">
-            <button id="copyButton" class="secondary-button" type="button">Copy</button>
-            <button id="downloadButton" class="primary-button" type="button">Download HTML</button>
-          </div>
+        <div id="codeView" class="view-container">
+          <label class="sr-only" for="result">Converted HTML</label>
+          <textarea id="result" class="code-editor" readonly spellcheck="false" placeholder="Output will appear here..."></textarea>
         </div>
-      </section>
-    </main>
+        <div id="previewView" class="view-container html-preview" hidden>
+          <iframe id="preview" title="Safe HTML preview" sandbox="" referrerpolicy="no-referrer"></iframe>
+          <div class="preview-invalid" id="previewInvalid" hidden>Please check your HTML to preview it.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="settings-overlay" id="settingsOverlay" hidden>
+    <div class="settings-modal" id="settingsPanel" role="dialog" aria-label="Settings" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="settings-head"><strong id="settingsTitle">Settings</strong><button type="button" class="icon-btn" id="closeSettings" title="Close settings" aria-label="Close settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+      <div class="settings-body">
+        <label class="setting-row" for="wordWrap"><span>Word wrap</span><span class="switch"><input type="checkbox" id="wordWrap" checked><span class="switch-track"></span></span></label>
+        <label class="setting-row" for="autoProtectTags"><span>Auto-protect [tags]</span><span class="switch"><input type="checkbox" id="autoProtectTags" checked><span class="switch-track"></span></span></label>
+        <label class="setting-row" for="darkMode"><span>Dark mode</span><span class="switch"><input type="checkbox" id="darkMode"><span class="switch-track"></span></span></label>
+        <div class="settings-credit">
+          <hr>
+          <p>Made by <a href="https://github.com/med6ba" target="_blank" rel="noopener noreferrer">Medba</a></p>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="assets/script.js"></script>
